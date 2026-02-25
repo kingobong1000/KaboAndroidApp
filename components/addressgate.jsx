@@ -1,0 +1,73 @@
+import { StyleSheet, Text, View, Pressable, useColorScheme } from 'react-native';
+
+// Themes
+// -----------------------------------
+import ThemedSubtext from './themed/ThemeSubtxt';
+import Themedview from './themed/Themedview';
+import Themedtext from './themed/Themedtext';
+
+// -----------------------------------
+
+import { Colors } from '../constants/Colors';
+import GoogleIcon from './GoogleIcon';
+
+
+const AddressGate = ({id, status}) => {
+
+    const schemeRaw = useColorScheme();
+    const colorscheme = schemeRaw.toLowerCase();
+    const theme = Colors.theme[colorscheme] ?? Colors.theme.light;
+
+    console.trace('In Addressgate: ', 'ideology:', id, 'status Check:', status)
+  return (
+    <View style={styles.container}>
+        <View style={styles.top}>
+        <Themedtext variant="title">Address</Themedtext>
+        </View>
+
+        <View style={styles.mid}>
+        <Text>Welcome</Text>
+        </View>
+
+
+        <View style={styles.bottom}>
+        <View>
+        </View>
+            <View>
+            <ThemedSubtext style={styles.bottomnote} variant="note">Lorem Ipsum has been the industry's standard dummy </ThemedSubtext>
+        </View>
+        </View>
+    </View>
+  )
+}
+
+export default AddressGate
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 60,
+  },
+
+  top: {
+    padding: 12,
+  },
+
+  bottomnote: {
+    width: '80%',
+    textAlign: 'center',
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
+
+  bottom: {
+    paddingBottom: 10,
+    width: '90%',
+    color: '#222'
+  }
+
+})

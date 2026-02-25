@@ -1,0 +1,32 @@
+Kabo
+===========================
+Home
+---------------------------
+1. Address/Location
+1. Categories
+2. Trending
+3. FAQs
+4. Notifications
+---------------------------
+Search
+---------------------------
+1. Search
+2. Brands
+3. Popular
+---------------------------
+Orders
+---------------------------
+1. Current Order
+2. Track your order
+3. Order History
+---------------------------
+Profile
+---------------------------
+3. Profile 
+4. Notifications
+1. Order History
+2. Account
+3. FAQs
+4. Notifications
+5. Delete my Account
+6. Log out
