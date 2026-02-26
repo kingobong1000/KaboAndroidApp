@@ -25,9 +25,7 @@ const AddressGate = ({id, status}) => {
         <Themedtext variant="title">Address</Themedtext>
         </View>
 
-        <View style={styles.mid}>
-        <Text>Welcome</Text>
-        </View>
+ 
 
 
         <View style={styles.bottom}>
@@ -67,7 +65,12 @@ const styles = StyleSheet.create({
   bottom: {
     paddingBottom: 10,
     width: '90%',
-    color: '#222'
+    color: '#222',
+    backgroundColor: '#EEE',
+    position: 'absolute',
+    zIndex: 5,
+    bottom: 20,
+    width: '95%'
   }
 
 })

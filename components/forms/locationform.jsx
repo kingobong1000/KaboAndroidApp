@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, useColorScheme } from 'react-native'
 
-
+import { Colors } from '../../constants/Colors';
 
 const Locationform = () => {
         const schemeRaw = useColorScheme();
@@ -13,8 +13,8 @@ const Locationform = () => {
         <View style={[styles.mapholder, {backgroundColor: theme.map }]}></View>
         {/* ====================== */}
         <View style={[styles.sectcontrol, {backgroundColor: theme.ui}]}>
-        <Text>Locationform</Text>
-        <Text>Locationform</Text>
+            <Text>Locationform</Text>
+            <Text>Locationform</Text>
         </View>
     </View>
 
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        padding: 10,
         position: 'relative',
         zIndex: 1,
     },
