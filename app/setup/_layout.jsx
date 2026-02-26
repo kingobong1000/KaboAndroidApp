@@ -36,7 +36,7 @@ const SetupLayout = () => {
           canGoBack ? (
             <Pressable
               onPress={() => router.back()}
-              style={{ paddingHorizontal: 12, paddingVertical: 8 }}
+              style={{ paddingHorizontal: 1, paddingVertical: 8 }}
               hitSlop={10}
             >
                <Ionicons name="chevron-back" size={26} color={tintColor} />
@@ -47,7 +47,12 @@ const SetupLayout = () => {
             <Stack.Screen name="index"  options={{
               title:"Home", 
               headerShown: false 
-              }} />
+            }} />
+
+            <Stack.Screen name="address"  options={{
+              title:"Address", 
+              headerShown: false 
+            }} />
         </Stack>
     </View>
   )

@@ -32,7 +32,9 @@ export const Colors = {
       grad2: '#3465d7',
       bright: '#EEE',
       sublime: '#5b7aa8',
-      map: '#b5d4ff'
+      map: '#b5d4ff',
+      search: '#e3e7f2'
+
     },
 
     dark: {
@@ -59,7 +61,8 @@ export const Colors = {
       grad2: '#303030',
       bright: '#ABBBC6',
       sublime: '#5b7aa8',
-      map: '#081322'
+      map: '#081322',
+      search: '#777'
 
     }
   }

@@ -10,6 +10,9 @@ const Locationform = () => {
         
   return (
     <View style={styles.container}>
+        <View style={[styles.search, {backgroundColor: theme.search}]}>
+            <Text>Search</Text>
+        </View>
         <View style={[styles.mapholder, {backgroundColor: theme.map }]}></View>
         {/* ====================== */}
         <View style={[styles.sectcontrol, {backgroundColor: theme.ui}]}>
@@ -42,8 +45,20 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '90%',
         position: 'absolute',
+        zIndex: 5,
         alignSelf: 'center',
-        bottom: 14,
+        bottom: 34,
         minHeight: 22,
+        borderRadius: 15,
+    },
+
+    search: {
+        borderRadius: 50,
+        width: '90%',
+        height: 44,
+        position: 'absolute',
+        zIndex: 3,
+        top: 60,
+        alignSelf: 'center',
     }
 })

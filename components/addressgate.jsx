@@ -22,18 +22,20 @@ const AddressGate = ({id, status}) => {
   return (
     <View style={styles.container}>
         <View style={styles.top}>
-        <Themedtext variant="title">Address</Themedtext>
+        <Themedtext variant="title">Addy</Themedtext>
         </View>
 
  
 
 
         <View style={styles.bottom}>
-        <View>
-        </View>
+          <View>
+            <Text>checking</Text>
+          </View>
+
             <View>
-            <ThemedSubtext style={styles.bottomnote} variant="note">Lorem Ipsum has been the industry's standard dummy </ThemedSubtext>
-        </View>
+                <ThemedSubtext style={styles.bottomnote} variant="note">Lorem Ipsum has been the industry's standard dummy </ThemedSubtext>
+            </View>
         </View>
     </View>
   )
@@ -49,6 +51,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 60,
+    position: 'relative',
+    zIndex: 1,
   },
 
   top: {
