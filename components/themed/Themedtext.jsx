@@ -18,7 +18,7 @@ const Themedtext = ({
       fontSize: 22,
       color: theme.title,
     },
-    subtitle: {
+    subtitle: { 
       fontFamily: 'Inter_500Medium',
       fontSize: 16,
       color: theme.text,

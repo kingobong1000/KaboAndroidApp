@@ -8,6 +8,13 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "android": { "config": { "googleMaps": { "apiKey": "AIzaSyCcBnL-OMCCPkGYSCTTW4VlFlPMSV5YtUk" } } },
+    "ios": { "config": { "googleMapsApiKey": "AIzaSyCcBnL-OMCCPkGYSCTTW4VlFlPMSV5YtUk" } },
+     "android": {
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyCcBnL-OMCCPkGYSCTTW4VlFlPMSV5YtUk" }
+      }
+    },
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",

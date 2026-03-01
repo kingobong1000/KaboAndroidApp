@@ -20,8 +20,8 @@ export default function ThemedSubtext({
 
   const typography = {
     highlight: {
-      fontFamily: "Inter_600SemiBold",
-      fontSize: 17,
+      fontFamily: "Inter_800SemiBold",
+      fontSize: 21,
       color: theme?.hl01,
     },
     subtext: {
@@ -58,7 +58,7 @@ export default function ThemedSubtext({
 
 const styles = StyleSheet.create({
   text: {
-    paddingLeft: 15,
+    textAlign: 'left',
     flexShrink: 1, // better than flex: 1 for Text
     // remove width/flex so it doesn't collapse in certain layouts
   },
