@@ -234,9 +234,6 @@ const styles = StyleSheet.create({
     minHeight: 20,
     marginTop: 140,
 
-  }
-
-   
-
+  },
 
 })

@@ -16,21 +16,21 @@ const Address = () => {
     const router = useRouter();
 
   return (
-    <Themedview>
+    <View style={styles.container}>
       {status === "Accept" ? <AddressGate id={id} status={status} /> : <Locationform />}
-    </Themedview>
+    </View>
   )
 }
 
 export default Address
 
 const styles = StyleSheet.create({
+
+  
   container: {
     flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 60,
+    position: 'relative'
+ 
   },
 
   top: {

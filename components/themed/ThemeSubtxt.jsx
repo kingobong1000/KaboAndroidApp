@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, Text, useColorScheme } from "react-native";
 import { Colors } from "../../constants/Colors";
 
+
+
 export default function ThemedSubtext({
   style,
   variant = "note", // "highlight" | "subtext" | "note"
@@ -62,4 +64,8 @@ const styles = StyleSheet.create({
     flexShrink: 1, // better than flex: 1 for Text
     // remove width/flex so it doesn't collapse in certain layouts
   },
+
+  text: {
+    
+  }
 });
