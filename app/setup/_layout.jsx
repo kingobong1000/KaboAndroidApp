@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, useColorScheme, Pressable } from 'react-native'
+import { StyleSheet, Linik, Text, View, useColorScheme, Pressable } from 'react-native'
 import { Stack, useRouter, Link } from "expo-router";
 import { StatusBar } from 'expo-status-bar'
 import { Colors } from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
- 
+
+import ThemedSubtext from '../../components/themed/ThemeSubtxt';
+import AdminButton from '../../components/AdminButton';
 
 
 const SetupLayout = () => {
@@ -54,6 +56,18 @@ const SetupLayout = () => {
               headerShown: false 
             }} />
         </Stack>
+          <View style={[styles.bottom]}>
+          <View style={[styles.bottomlinks]}>
+          <Link href="./setup/index"><ThemedSubtext variant='note' style={[styles.linker, {color: theme.links}]}>Setup</ThemedSubtext></Link>
+          <Link href="./setup/address"><ThemedSubtext variant='note'  style={[styles.linker, {color: theme.links}]}>Address</ThemedSubtext></Link>
+          <Link href="./setup/phone"><ThemedSubtext variant='note'  style={[styles.linker, {color: theme.links}]}>Phone</ThemedSubtext></Link>
+          <Link href="./setup/profile"><ThemedSubtext variant='note'  style={[styles.linker, {color: theme.links}]}>Profile</ThemedSubtext></Link>
+          <Link href="setup/settings"><ThemedSubtext variant='note'  style={[styles.linker, {color: theme.links}]}>Settings</ThemedSubtext></Link>
+          </View>
+            {/* --------------- */}
+            <View><AdminButton /></View>
+          </View>
+          
     </View>
   )
 }
@@ -67,6 +81,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         background: '#333'
     },
+
+    bottom: {
+      paddingBottom: 44,
+      position: 'absolute',
+      bottom: -1,
+      alignSelf: 'center',
+      width: '90%'
+    },
+
+    bottomlinks: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      paddingBottom: 10,
+      width: '70%',
+      alignSelf: 'center',
+    },
+
+
+    linker: {
+      paddingHorizontal: 14,
+      paddingVertical: 5,
+      padding: 6,
+    }
 
 
 

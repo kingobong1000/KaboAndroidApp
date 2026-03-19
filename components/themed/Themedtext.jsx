@@ -14,18 +14,24 @@ const Themedtext = ({
     
   const typography = {
     title: {
-      fontFamily: 'Inter_700Bold',
-      fontSize: 22,
+      fontFamily: 'Inter_900Black',
+      fontSize: 25,
       color: theme.title,
     },
     subtitle: { 
-      fontFamily: 'Inter_500Medium',
+      fontFamily: 'Inter_800ExtraBold',
       fontSize: 16,
       color: theme.text,
     },
     body: {
       fontFamily: 'Inter_300Light',
-      fontSize: 15,
+      fontSize: 16,
+      color: theme.text,
+    },
+      design: {
+      fontFamily: 'Inter_400Regular',
+      fontSize: 33,
+      letterSpacing: -12,
       color: theme.text,
     },
   };

@@ -15,8 +15,12 @@
     import MapView, { Marker } from "react-native-maps";
     import * as Location from "expo-location";
     import { useForm } from "react-hook-form";
-
-
+    // ==========================
+    import * as SQLite from "expo-sqlite";
+    import { initDb, upsertUser, saveUserLocation  } from '../../constants/sqlite';
+    import { setCurrentUserId } from '../../constants/securestore';
+    import { useRouter } from "expo-router";
+    // ==========================
     import { Colors } from '../../constants/Colors';
     import { Ionicons, MaterialCommunityIcons, MaterialIcons, Feather, FontAwesome5, FontAwesome, Fontisto } from '@expo/vector-icons';
     import MapScreen from '../maps/mapscreen';
@@ -27,7 +31,10 @@
     import { VerticalDotLine } from '../graphic/verticalline';
     import DisplayDropdown from '../graphic/DisplayDropdown';
 
+    const db = SQLite.openDatabaseSync("app.db");
+
     const Locationform = () => {
+            const router = useRouter(); 
             const schemeRaw = useColorScheme();
             const colorscheme = schemeRaw.toLowerCase();
             const theme = Colors.theme[colorscheme] ?? Colors.theme.light;
@@ -53,6 +60,9 @@
                     "Freedom Way, Lekki Phase 1, Lagos",
                     "Adeola Odeku St, Victoria Island, Lagos",
                     "Herbert Macaulay Way, Yaba, Lagos",
+                    "Freedom Way, Lekki Phase 1, Lagos",
+                    "24 Adeola Odeku St, Victoria Island, Lagos",
+                    "34 Herbert Macaulay Way, Yaba, Lagos",
                 ],
                 []
             );
@@ -60,7 +70,7 @@
             const updateSuggestions = (text) => {
             const q = (text || "").trim().toLowerCase();
 
-                if (q.length < 2) {
+                if (q.length < 1) {
                 setSuggestions([]);
                 setShowDropdown(false);
                 return;
@@ -72,12 +82,17 @@
             };
 
 
+            // For the Alert
+            // This is where the saving code goes and then move to next page
             const onProceed = (data) => {
                 // Here is where you proceed with the selected address
                 console.log("Proceed with:", data.address);
+                router.navigate("/setup/phone");
             };
 
+            // Function for select address
             const pickAddress = (selectedAddress) => {
+                console.log('CHecking the thing');
                 setValue("address", selectedAddress, { shouldDirty: true });
                 setSuggestions([]);
                 setShowDropdown(false);
@@ -87,7 +102,12 @@
                 selectedAddress,
                 [
                     { text: "Change", style: "cancel" },
-                    { text: "Proceed", onPress: () => handleSubmit(onProceed)() },
+                    {
+                    text: "Proceed",
+                    onPress: () => {
+                        handleSubmit(onProceed)();
+                    },
+                    },
                 ],
                 { cancelable: true }
                 );
@@ -96,13 +116,13 @@
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-            {/* input */}
-            <View style={[styles.search,{backgroundColor: theme.ux}]}>
+        {/* ============= */}
+           <View style={[styles.search,{backgroundColor: theme.ux}]}>
                 <View style={styles.navicon}><FontAwesome5 name="chevron-left" size={24} color={theme.hl01} /></View>
-                <View style={{flex: 1}}>
-                    <OneFieldForm control={control} onTyping={updateSuggestions} />
-                </View> {/* input */}
-                <View style={styles.navicon}><FontAwesome name="search" size={24} color={theme.hl01} /></View>
+                    <View style={{flex: 1}}>
+                        <OneFieldForm control={control} onTyping={updateSuggestions} />
+                    </View>{/* input */}
+                    <View style={styles.navicon}><FontAwesome name="search" size={24} color={theme.hl01} /></View>
             </View>
             {/* ======================= */}
             <View style={[styles.mapholder, {backgroundColor: theme.map, padding:0, margin: 0 }]}>
@@ -111,13 +131,14 @@
             {/* ====================== */}
             <View style={[styles.sectcontrol, {backgroundColor: theme.ux}]}>
                 <View style={[styles.flexhold, {paddingBottom: 15}]}>
-                     <View style={styles.fheit}>
+                    <View style={styles.fheit}>
                         <Text style={styles.biggTxt}>74F</Text>
                         <Text>Locationform</Text>
                         <View><Ionicons name="settings" size={33} color="#dbae0c" /></View>
                     </View>
+                    {/* ====================== */}
                     <View style={[styles.secondwing, styles.border]}>
-                         <View style={styles.fromto}>
+                        <View style={styles.fromto}>
                             <View style={[styles.from, styles.round]}><View style={[styles.dot, {backgroundColor: theme.background}]}></View></View>
                             <View style={styles.route}></View>
                             <View style={[styles.to, styles.round]}><View style={[styles.dot, {backgroundColor: theme.background}]}></View></View>
@@ -134,30 +155,30 @@
                         </View>{/* bump */}
                     </View>{/* secondwingßß */}
                 </View>{/* Flexhold */}
-                 {/* ====================== */}
-                 <View style={styles.section}>
-                   <View style={styles.digits}>
-                    <View style={[styles.keyicon,{backgroundColor:theme.shadow}]}><Fontisto name="car" size={24} color={theme.hl02} /></View>
-                    <View style={styles.digitvalues}>
-                        <ThemedSubtext variant='note'>Distance</ThemedSubtext>
-                        <View style={styles.flexhold}>
-                            <ThemedSubtext variant="highlight" style={styles.htext}>8.54</ThemedSubtext>
-                            <Themedtext style={styles.tiny}>km</Themedtext>
+                {/* ====================== */}
+                <View style={styles.section}>
+                    <View style={styles.digits}>
+                        <View style={[styles.keyicon,{backgroundColor:theme.shadow}]}><Fontisto name="car" size={24} color={theme.hl02} /></View>
+                        <View style={styles.digitvalues}>
+                            <ThemedSubtext variant='note'>Distance</ThemedSubtext>
+                            <View style={styles.flexhold}>
+                                <ThemedSubtext variant="highlight" style={styles.htext}>8.54</ThemedSubtext>
+                                <Themedtext style={styles.tiny}>km</Themedtext>
+                            </View>
                         </View>
-                    </View>
                     {/* ====================== */}
-                     <View style={styles.digitvalues}>
-                        <ThemedSubtext variant='note'>Time</ThemedSubtext>
-                        <View style={styles.flexhold}>
-                            <ThemedSubtext variant="highlight" style={styles.htext}>8.54</ThemedSubtext>
-                            <Themedtext style={styles.tiny}>km</Themedtext>
-                        </View>
-                    </View>
+                        <View style={styles.digitvalues}>
+                            <ThemedSubtext variant='note'>Time</ThemedSubtext>
+                            <View style={styles.flexhold}>
+                                <ThemedSubtext variant="highlight" style={styles.htext}>8.54</ThemedSubtext>
+                                <Themedtext style={styles.tiny}>km</Themedtext>
+                            </View>
+                        </View>{/* digitvalues */}
                     {/* ------------------- */}
                     </View>{/* digits */}
                     <View style={[styles.circle,{backgroundColor: theme.hl01}]}><Feather name="arrow-right" size={24} color={theme.bright}/></View>
-                 </View>
-            </View>
+                </View>{/* section */}
+            </View>{/* sectcontrol */}
             {/* ✅ keep dropdown here so it's still overlay-fullscreen */}
             <DisplayDropdown
                 visible={showDropdown}
@@ -166,6 +187,7 @@
                 onClose={() => setShowDropdown(false)}
                 title="You're Here!"
             />
+         {/* ============= */}
         </View>
         </TouchableWithoutFeedback>
     )}

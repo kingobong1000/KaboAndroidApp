@@ -1,18 +1,18 @@
-import { StyleSheet, Text, View, useColorScheme } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { Colors } from '../../constants/Colors';
+import { useTheme } from '../../context/ThemeContext';
 
 
 
-const Section = ({ 
+const Section = ({
   style,
   bg,
   children,
   ...props 
 }) =>  {
-    const schemeRaw = useColorScheme();
-    const colorscheme = schemeRaw.toLowerCase();
-    const theme = Colors.theme[colorscheme] ?? Colors.theme.light
-    const clr = bg ?? theme.section
+   const { theme, setTheme } = useTheme(); // ✅ theme is available
+    const uTheme = Colors.theme[theme] ?? Colors.theme.light;
+    const clr = bg ?? uTheme.section
   return (
     <View 
     style={[

@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View, Image} from 'react-native'
 import { useEffect } from 'react';
 import { router } from 'expo-router';
-
+import { initApp } from '../../utils/database';
+// ----------------------------
 import { StatusBar } from 'expo-status-bar';
 import Screen from '../../assets/images/screen.jpg';
 const Splash = () => {
 
   useEffect(() => {
+    initApp();
     const timer = setTimeout(() => {
       router.replace('/intro'); // or /(dashboard)
     }, 11000);

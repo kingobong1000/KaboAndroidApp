@@ -1,7 +1,11 @@
-import { Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native'
-import { Colors } from '../../constants/Colors'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useRouter } from 'expo-router';
+// ----------------------------
+import { Colors } from '../../constants/Colors';
+import { useTheme } from '../../context/ThemeContext';
+// ----------------------------
 import Pretext from './Pretext';
+// ----------------------------
 
 const ThemedCard = ({ 
   icon,
@@ -11,9 +15,9 @@ const ThemedCard = ({
   style, 
   ...props 
 }) => {
-    const schemeRaw = useColorScheme();
-    const colorscheme = schemeRaw.toLowerCase();
-    const theme = Colors.theme[colorscheme] ?? Colors.theme.light
+    const {theme, setTheme } =  useTheme();
+    const uTheme = Colors.theme[theme] ?? Colors.theme.light;
+
   return (
     <Pressable 
       onPress={onPress}
@@ -22,14 +26,14 @@ const ThemedCard = ({
         styles.container,
         style,
         {
-          backgroundColor: theme.uibackground
+          backgroundColor: uTheme.uibackground
         }, 
       pressed && { 
         // opacity: 0.5,
         transform: [{ scale: 0.96 }],
         shadowOpacity: 0.65,
         elevation: 2,
-        backgroundColor: theme.over
+        backgroundColor: uTheme.over
         },
       ]} 
     >
@@ -40,8 +44,8 @@ const ThemedCard = ({
       <View style={styles.txt}>
         <Pretext>{text}</Pretext>
       </View>
-      <View style={[styles.indicator, {backgroundColor:  theme.shadow}]}>
-        <View style={[styles.indicatorlight, {backgroundColor: theme.indicator}]}></View>
+      <View style={[styles.indicator, {backgroundColor:  uTheme.shadow}]}>
+        <View style={[styles.indicatorlight, {backgroundColor: uTheme.indicator}]}></View>
       </View>
     </Pressable>
   )

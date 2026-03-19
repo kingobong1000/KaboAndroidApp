@@ -108,18 +108,10 @@ const Setuphome = () => {
 
 
 <View style={styles.bottomnote}>
-    <Themedicon family="google" name="settings" variant="note" />
+    {/* <Themedicon family="google" name="settings" variant="note" /> */}
     <View style={{flex: 1}}>
       {/* <View><ThemedSubtext variant='subtext'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ThemedSubtext></View> */}
-
-      <View><ThemedSubtext>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ThemedSubtext></View>
-      <View style={[styles.bottomlinks]}>
-          <Link href="./setup/index"><ThemedSubtext variant='note' style={{color: theme.links}}>Setup</ThemedSubtext></Link>
-          <Link href="./setup/address"><ThemedSubtext variant='note'  style={{ color: theme.links}}>Address</ThemedSubtext></Link>
-          <Link href="./setup/phone"><ThemedSubtext variant='note'  style={{ color: theme.links}}>Phone</ThemedSubtext></Link>
-          <Link href="./setup/profile"><ThemedSubtext variant='note'  style={{ color: theme.links}}>Profile</ThemedSubtext></Link>
-          <Link href="./setup/settings"><ThemedSubtext variant='note'  style={{ color: theme.links}}>Settings</ThemedSubtext></Link>
-      </View>
+      {/* <View><ThemedSubtext>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ThemedSubtext></View> */}
     </View>
   </View>
 

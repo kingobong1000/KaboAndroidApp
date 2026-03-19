@@ -1,14 +1,9 @@
-import { StyleSheet } from 'react-native'
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import {
-  Ionicons,
-  MaterialIcons,
-  FontAwesome,
-  Feather,
-  AntDesign
-} from '@expo/vector-icons';
+import { useState, useEffect } from "react";
+import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
+
+
+import { ThemeProvider } from "../context/ThemeContext";
 
 import {
   Inter_100Thin,
@@ -22,11 +17,14 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 
-
-
-const RootLayout = () => {
  
-      // fonts
+
+export default function RootLayout() {
+  
+  const [theme, setTheme] = useState("light");
+  const [ready, setReady] = useState(false);
+ 
+    // fonts
     const [fontsLoaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
@@ -39,21 +37,20 @@ const RootLayout = () => {
     Inter_900Black
   });
 
-
-  if (!fontsLoaded) {
-    return null; // or keep splash visible
-  }
+  // setting up the database
+  // ============================
+  // 3️⃣ Conditional rendering happens AFTER hooks
+ if (!fontsLoaded) return null;
 
   return (
+    <ThemeProvider>
       <Stack 
         screenOptions={{ headerShown: false }} >
-        <Stack.Screen name="(auth)" options={{headerShown: false}} />
-        <Stack.Screen name="(responses)" options={{headerShown: false}} />
         <Stack.Screen name="index" options={{title: 'Home'}} />
       </Stack>
+    </ThemeProvider>  
   )
 }
 
-export default RootLayout
-
-const styles = StyleSheet.create({})
+ 
+ 

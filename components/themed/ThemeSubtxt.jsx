@@ -1,71 +1,75 @@
 import React from "react";
-import { StyleSheet, Text, useColorScheme } from "react-native";
-import { Colors } from "../../constants/Colors";
+import { Text } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
+import Colors from "../../constants/Colors";
 
-
-
+/**
+ * ThemedSubtext Component
+ *
+ * Variants:
+ * - highlight → strong emphasis text
+ * - subtext   → secondary text
+ * - note      → small helper / muted text
+ *
+ * Props:
+ * - variant   → typography style
+ * - fontSize  → override font size
+ * - color     → override text color
+ * - style     → additional styles
+ * - children  → text content
+ */
 export default function ThemedSubtext({
-  style,
   variant = "note", // "highlight" | "subtext" | "note"
   fontSize,
+  color,
+  style,
   children,
   ...props
 }) {
-  const scheme = (useColorScheme() || "light").toLowerCase();
 
-  // Safer fallback in case your Colors shape differs
-  const theme =
-    Colors?.theme?.[scheme] ??
+  // 1️⃣ Global theme from context
+  const { theme } = useTheme();
+
+  // 2️⃣ Resolve active theme safely
+  const activeTheme =
+    Colors?.theme?.[theme] ??
     Colors?.theme?.light ??
-    Colors?.[scheme] ??
-    Colors?.light;
+    Colors?.light ??
+    {};
 
-  const typography = {
+  // 3️⃣ Typography system
+  const TYPOGRAPHY = {
     highlight: {
-      fontFamily: "Inter_800SemiBold",
-      fontSize: 21,
-      color: theme?.hl01,
+      fontFamily: "Inter_700Bold",
+      fontSize: 15,
+      color: activeTheme?.hl01 ?? "#000",
     },
     subtext: {
       fontFamily: "Inter_500Medium",
       fontSize: 13,
-      color: theme?.undertxt,
+      color: activeTheme?.undertxt ?? "#666",
     },
     note: {
       fontFamily: "Inter_300Light",
       fontSize: 11,
-      color: theme?.note,
+      color: activeTheme?.note ?? "#999",
     },
   };
 
-  const selected = typography[variant] ?? typography.note;
+  // 4️⃣ Select variant safely
+  const selected = TYPOGRAPHY[variant] ?? TYPOGRAPHY.note;
+
+  // 5️⃣ Build final style (priority matters)
+  const finalStyle = [
+    selected,                  // base typography
+    fontSize && { fontSize },  // optional override
+    color && { color },        // explicit color override
+    style,                     // external styles win last
+  ];
 
   return (
-    <Text
-      {...props}
-      style={[
-        styles.text,
-        {
-          fontFamily: selected.fontFamily,
-          fontSize: fontSize ?? selected.fontSize,
-          color: selected.color,
-        },
-        style,
-      ]}
-    >
+    <Text style={finalStyle} {...props}>
       {children}
     </Text>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    textAlign: 'left',
-    flexShrink: 1, // better than flex: 1 for Text
-    // remove width/flex so it doesn't collapse in certain layouts
-  },
-
-  text: {
-    
-  }
-});

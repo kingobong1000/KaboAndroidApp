@@ -20,8 +20,8 @@ export default function DisplayDropdown({
         right: 0,
         bottom: 0,
         zIndex: 5,
-      }}
-    >
+        minHeight: 1,
+      }}>
       <View
         style={{
           backgroundColor: "white",
@@ -48,21 +48,25 @@ export default function DisplayDropdown({
                 </Pressable>
             </View>
         </View>
-
         <View>
           {suggestions.map((item, idx) => (
-            <TextInput
+           <Pressable
               key={`${item}_${idx}`}
-              value={item}
-              editable={false}
-              onPressIn={() => onPick(item)}
+              onPress={() => onPick(item)}
               style={{
                 padding: 16,
-                fontSize: 18,
-                color: '#555',
                 borderTopWidth: idx === 0 ? 0 : 1,
               }}
-            />
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#555",
+                }}
+              >
+                {item}
+              </Text>
+            </Pressable>
           ))}
         </View>
       </View>
@@ -73,7 +77,6 @@ export default function DisplayDropdown({
 
 
 const styles = StyleSheet.create({
-  
 
   top: {
     flexDirection: 'row',
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
 
   titletxt: {
     fontFamily: 'Inter_800ExtraBold',
-    fontSize: 25,
+    fontSize: 23,
   },
 
   closebut: {
@@ -134,7 +137,9 @@ const styles = StyleSheet.create({
   btnPressed: {
     transform: [{ scale: 0.98 }],
     opacity: 0.92,
+    backgroundColor: '#c0e6ff',
   },
+
   btnDisabled: {
     opacity: 0.45,
   },
