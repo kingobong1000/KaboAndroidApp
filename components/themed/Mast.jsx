@@ -4,43 +4,55 @@ import { Colors } from '../../constants/Colors';
 import { useTheme } from '../../context/ThemeContext';
 
 
-
 const Mast = ({
   style,
   bgColor,
+  border = false, // default OFF
   height,
   children,
   ...props
 }) => {
   const { theme } = useTheme();
-  const uTheme = Colors.theme[theme] ?? Colors.theme.light;
+
+  const uTheme =
+    Colors?.theme?.[theme] ??
+    Colors?.theme?.light ??
+    {};
 
   return (
     <View
-      style={[styles.pgtitle,
+      style={[
+        styles.pgtitle,
         {
-          backgroundColor: uTheme.grad1,
-          height,
+          backgroundColor: bgColor ?? uTheme.grad1 ?? "#fff",
+          ...(height ? { height } : {}),
+
+          // ✅ Toggle border ON/OFF
+          ...(border && {
+            borderWidth: 1,
+            borderColor: uTheme.border ?? "#361717",
+          }),
         },
-        style, // ✅ allow overrides
+        style,
       ]}
       {...props}
     >
       {children}
     </View>
-  )
-}
+  );
+};
 
 export default Mast
 
 const styles = StyleSheet.create({
     pgtitle: {
     padding: 15,
-    paddingTop: 145,
-    flexDirection: 'row',
-    justifyContent: "space-between",
+    paddingBottom: 5,
+    flexDirection: 'column',
+    justifyContent: "flex-end",
     minHeight: 50,
-    height: 60,
+    position: 'relative',
+
   },
 
 })

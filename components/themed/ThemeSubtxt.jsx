@@ -45,7 +45,7 @@ export default function ThemedSubtext({
       color: activeTheme?.hl01 ?? "#000",
     },
     subtext: {
-      fontFamily: "Inter_500Medium",
+      fontFamily: "Inter_300Light",
       fontSize: 13,
       color: activeTheme?.undertxt ?? "#666",
     },

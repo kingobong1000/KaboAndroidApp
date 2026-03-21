@@ -1,6 +1,13 @@
 import { useState } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
-import { showTables, showColumns, dropAllTables } from '../../utils/database';
+import { View, Text, Button, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { showTables, 
+  showColumns, 
+  dropAllTables,
+  createNewTable,
+  deleteTable,
+  truncateTable,
+  showTableStructure
+} from '../../utils/database';
 import { Link, useRouter } from 'expo-router';
 // --------------------------
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,6 +19,7 @@ import Grid from '../../components/Grid';
 import Spacer from '../../components/spacer';
 import Bucket from '../../components/themed/Bucket';
 import ThemedSubtext from '../../components/themed/ThemeSubtxt';
+
  
 
 export default function DevPanel() {
@@ -19,6 +27,7 @@ export default function DevPanel() {
   const { theme, setTheme } = useTheme(); // ✅ theme is available
   const uTheme = Colors.theme[theme] ?? Colors.theme.light;
   const [logs, setLogs] = useState([]);
+  const [inputs, setInputs] = useState({});
   // -----------------------
   const log = (data) => {
   if (Array.isArray(data) && data[0]?.type) {
@@ -26,7 +35,6 @@ export default function DevPanel() {
     const formatted = data.map(col =>
       `${col.name} (${col.type}) ${col.pk ? '[PK]' : ''}`
     ).join('\n');
-
     setLogs(prev => [formatted, ...prev]);
   } else {
     setLogs(prev => [JSON.stringify(data, null, 2), ...prev]);
@@ -43,54 +51,104 @@ export default function DevPanel() {
         onPress: async () => {
           const tables = await showTables();
           // log(tables.map(t => `• ${t.name}`).join('\n'));
-          log(JSON.stringify(tables));
-         
+          const text = tables.map(t => t.name).join("\n");
+          log(text);
         },
       },
       {
         id: "showtable",
-        header: "Table Content",
+        header: "Themes Table",
         txt: "There are many variations of passages of Lorem Ipsum ",
         icon: "account-group-outline",
         buttxt: "Execute",
         onPress: async () => {
           const columns = await showColumns("theme");
-          `${columns.name} (${columns.type}) ${columns.pk ? '[PK]' : ''}`
+          const formatted = columns.map(col => `• ${col.name}`);
+         log(["COLUMNS:", ...formatted]);
         },
+      }];
+
+      // ----------------------
+
+    const block2 = [
+    {
+      id: "create",
+      header: "Create Table",
+      txt: "Create a new table in the database",
+      icon: "table-plus",
+      hasInput: true,
+      buttxt: "Create Table",
+      onPress: async (tableName) => {
+        if (!tableName) return;
+        const result = await createNewTable(tableName);
+        log([`CREATED (${tableName})`, ...result.map(r => `• ${r.name}`)]);
       },
-      {
-        id: "reformat",
-        header: "Reformat Database",
-        txt: "Delete & Remove all tables in the Database",
-        icon: "cash-multiple",
-        buttxt: "Delete All Tables",
-        onPress: async () => {
-          const dbase = await dropAllTables();
-          log(JSON.stringify(dbase));
-        },
+    },
+
+    {
+      id: "delete",
+      header: "Delete Table",
+      txt: "Completely remove a table",
+      icon: "table-remove",
+      hasInput: true,
+      buttxt: "Delete Table",
+      onPress: async (tableName) => {
+        if (!tableName) return;
+        const result = await deleteTable(tableName);
+        log([`DELETED (${tableName})`, ...result.map(r => `• ${r.name}`)]);
       },
-      {
-        id: "delete",
-        header: "Delete Database",
-        txt: "There are many variations of passages of Lorem Ipsum ",
-        icon: "database-arrow-down-outline",
-        buttxt: "Execute",
-        onPress: () => console.log("Orders"),
+    },
+
+    {
+      id: "truncate",
+      header: "Clear Table",
+      txt: "Remove all rows but keep structure",
+      icon: "broom",
+      hasInput: true,
+      buttxt: "Clear Table",
+      onPress: async (tableName) => {
+        if (!tableName) return;
+        const result = await truncateTable(tableName);
+        log([`TRUNCATED (${tableName})`, ...result.map(r => `• ${r.name}`)]);
       },
+    },
+
+    {
+      id: "structure",
+      header: "Show Structure",
+      txt: "View table columns",
+      icon: "table-column",
+      hasInput: true,
+      buttxt: "Show Columns",
+      onPress: async (tableName) => {
+        if (!tableName) return;
+        const columns = await showTableStructure(tableName);
+        const formatted = columns.map(col => `• ${col.name}`);
+        log([`COLUMNS (${tableName}):`, ...formatted]);
+      },
+    },
+];
+
+
+    const action = [
       {
-        id: "account",
-        header: "Database",
-        txt: "There are many variations of passages of Lorem Ipsum ",
+        id: "deleteThemeDB",
+        header: "Delete Theme DB",
+        txt: "Delete the Theme Database Directly",
         icon: "account-group-outline",
-        buttxt: "Execute",
-        onPress: () => console.log("Customers"),
+        buttxt: "Delete Theme DB",
+        onPress: async () => {
+          const table = await dropThemeTable();
+          const formatted = table.map(col => `• ${col.name}`);
+          log([`COLUMNS (${tableName}):`, ...formatted]);
+        }, 
       },
       {
-        id: "activity",
-        header: "Database",
+        id: "deleteuser",
+        header: "Delete User",
         txt: "There are many variations of passages of Lorem Ipsum ",
         icon: "database-arrow-down-outline",
-        buttxt: "Execute",
+        buttxt: "Delete User",
         onPress: () => console.log("Customers"),
       },
       {
@@ -117,15 +175,15 @@ export default function DevPanel() {
              {logs.map((item, index) => {
               if (Array.isArray(item)) {
                 return item.map((row, i) => (
-                  <Text key={i} style={{ marginBottom: 5 }}>
-                    • {row.name || JSON.stringify(row)}
+                  <Text key={`${index}-${i}`} style={{ marginBottom: 5 }}>
+                    • {row.name}
                   </Text>
-                ));
+                ));                                                                                                                                                                                                                                                                                
               }
 
               return (
                 <Text key={index} style={{ marginBottom: 5 }}>
-                  {typeof item === "string" ? item : JSON.stringify(item)}
+                  {item}
                 </Text>
               );
             })}
@@ -141,7 +199,6 @@ export default function DevPanel() {
                   <Link href="admin/tools"><ThemedSubtext variant='subtext' color={uTheme.brand}  style={[styles.crumbsTxt, {color: uTheme.links}]}>Database</ThemedSubtext></Link>
                   <Link href="admin/reports"><ThemedSubtext variant='subtext' color={uTheme.brand}  style={[styles.crumbsTxt, {color: uTheme.links}]}>Reports</ThemedSubtext></Link>
               </View>
-
 
               <Spacer height={15} />
 
@@ -165,6 +222,78 @@ export default function DevPanel() {
                 ))}
                 </Grid>
               </View>
+                {/* -------------------- */}
+              <Spacer height={20} />
+              <View style={styles.gridholder}>
+                {block2.map((item) => (
+                  <Bucket
+                    style={styles.bump}
+                    key={item.id}
+                    header={item.header}
+                    txt={item.txt}
+                    inputPlaceholder="Database name here"
+                    inputProps={{ onChangeText: (text) => console.log(text) }}
+                    buttontxt={item.buttxt}
+                    height={185}
+                      icon={
+                      <MaterialCommunityIcons
+                      name={item.icon}
+                      size={18}
+                      color={uTheme.onDark}
+                      />
+                      }
+                     onPress={() => item.onPress?.(inputs[item.id])} // 👈 pass value
+                  >
+                    {item.hasInput && (
+                        <TextInput
+                          placeholder={item.placeholder || "Enter value"}
+                          value={inputs[item.id] || ""}
+                          onChangeText={(text) =>
+                            setInputs(prev => ({
+                              ...prev,
+                              [item.id]: text
+                            }))
+                          }
+                          style={{
+                            borderWidth: 1,
+                            borderColor: "#ccc",
+                            padding: 8,
+                            marginTop: 8,
+                            borderRadius: 6,
+                            color: uTheme.text
+                          }}
+                          placeholderTextColor="#888"
+                        />
+                      )}
+                    </Bucket>
+                ))}
+              </View>
+
+              {/* ---------------------- */}
+              <Spacer height={15} />
+
+              <View style={styles.gridholder}>
+                <Grid columns={2} gap={15}>
+                {action.map((item) => (
+                  <Bucket
+                    key={item.id}
+                    header={item.header}
+                    txt={item.txt}
+                    buttontxt={item.buttxt}
+                      icon={
+                      <MaterialCommunityIcons
+                      name={item.icon}
+                      size={18}
+                      color={uTheme.onDark}
+                      />
+                      }
+                    onPress={item.onPress}
+                  />
+                ))}
+                </Grid>
+              </View>
+
+              <Spacer height={55} />
           </View>
 
       {/* Buttons will go here */}
@@ -200,6 +329,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#dde9ff'
   },
 
+  bump: {
+    marginBottom: 15,
+  },
+
 
   crumbs: {
     flexDirection: 'row',
@@ -231,14 +364,17 @@ console: {
     padding: 20,
     paddingTop: 100,
     height: 600,
-    backgroundColor: '#c2e4ff',
+    backgroundColor: '#85b6ff',
+    position: 'relative',
+    zIndex: 1
 },
 
 
 dashrollout: {
   padding: 15,
-
-
+  position: 'relative',
+  zIndex: 3,
+  elevation: 5,
 },
 
 controlBank: {

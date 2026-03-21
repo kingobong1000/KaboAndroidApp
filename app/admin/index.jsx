@@ -12,6 +12,7 @@ import Grid from '../../components/Grid';
 import BlockChip from '../../components/themed/BlockChip';
 import Spacer from '../../components/spacer';
 import Mast from '../../components/themed/Mast';
+import Mastbar from '../../components/themed/Mastbar';
 // -----------------------
 import { 
   Ionicons,
@@ -80,18 +81,17 @@ const Dashboard = () => {
 
   return (
     <ScrollView style={{ flex: 1}}>
-      <Mast>
-        <View>
-          <Text style={[styles.titletxt, { color: "#222", fontSize: 18, fontFamily: 'Inter_700Bold' }]}>Dashboard</Text>
-          <View style={styles.iconholder}>
-          </View>
-      </View>
+      <Mast height={170}>
+        <Mastbar>
+            <Text style={[styles.titletxt, { color: "#222", fontSize: 18, fontFamily: 'Inter_700Bold' }]}>Dashboard</Text>
+            <View style={styles.iconholder}></View>
+        </Mastbar>
       </Mast>
         <View style={styles.widgetbank}>
             <View style={[styles.crumbs]}>
-                                  <Link href="admin/index"><ThemedSubtext variant='subtext' color={uTheme.brand} style={[styles.crumbsTxt, {color: uTheme.links}]}>Dashboard</ThemedSubtext></Link>
-                                  <Link href="admin/tools"><ThemedSubtext variant='subtext' color={uTheme.brand}  style={[styles.crumbsTxt, {color: uTheme.links}]}>Database</ThemedSubtext></Link>
-                                  <Link href="admin/reports"><ThemedSubtext variant='subtext' color={uTheme.brand}  style={[styles.crumbsTxt, {color: uTheme.links}]}>Reports</ThemedSubtext></Link>
+                <Link href="admin/index"><ThemedSubtext variant='subtext' color={uTheme.brand} style={[styles.crumbsTxt, {color: uTheme.links}]}>Dashboard</ThemedSubtext></Link>
+                <Link href="admin/tools"><ThemedSubtext variant='subtext' color={uTheme.brand}  style={[styles.crumbsTxt, {color: uTheme.links}]}>Database</ThemedSubtext></Link>
+                <Link href="admin/reports"><ThemedSubtext variant='subtext' color={uTheme.brand}  style={[styles.crumbsTxt, {color: uTheme.links}]}>Reports</ThemedSubtext></Link>
             </View>
 
             <View style={styles.bank}>

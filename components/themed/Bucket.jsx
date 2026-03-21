@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import { React, useState } from "react";
+import { StyleSheet, View, Pressable, Text, TextInput } from "react-native";
 // ------------------------------
 import { useTheme } from "../../context/ThemeContext";
 import { Colors } from "../../constants/Colors";
@@ -15,7 +15,10 @@ export default function Bucket({
   icon,
   header,
   txt,
+  height = 155,
   buttontxt,
+  inputPlaceholder,
+  inputProps,
   style,
   pressedStyle,
   disabled,
@@ -24,6 +27,8 @@ export default function Bucket({
 
   // ✅ Only what you need
 const { theme } = useTheme();
+ const [tableName, setTableName] = useState("");
+
 
 const uTheme =
   Colors?.theme?.[theme] ??
@@ -32,9 +37,8 @@ const uTheme =
 
   // console.log('Check the theme:', theme, 'Get uTheme:', uTheme);
  
-
   return (
-    <View style={[styles.container, style]} {...props}>
+    <View style={[styles.container,{height: height}, style]} {...props}>
 
       {/* Icon */}
       <View style={[styles.icon, {backgroundColor: uTheme.indicator}]}>
@@ -57,6 +61,15 @@ const uTheme =
         </ThemedSubtext>
       )}
 
+          {inputPlaceholder && (
+          <TextInput
+            style={[styles.input, { color: uTheme.htext ?? "#000" }]}
+            placeholder={inputPlaceholder}
+            placeholderTextColor={uTheme.note ?? "#888"}
+            {...inputProps} // for extra props like onChangeText
+          />
+        )}
+
       {/* Button */}
       {buttontxt && (
         <Pressable
@@ -74,7 +87,6 @@ const uTheme =
             </Text>
         </Pressable>
       )}
-
     </View>
   );
 }
@@ -87,14 +99,12 @@ const uTheme =
 const styles = StyleSheet.create({
   container: {
     minHeight: 14,
-    height: 155,
     padding: 10,
     position: 'relative',
     borderWidth: 1,
     borderColor: '#CCC',
     borderRadius: 20,
-
-  
+    paddingBottom: 12
   },
 
   icon: {
@@ -169,4 +179,14 @@ const styles = StyleSheet.create({
     minHeight: 11,
   },
 
+input: {
+    height: 35,
+    borderWidth: 2,
+    borderColor: "#999",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 8,
+    lineHeight: 13, // >= fontSize
+    alignItems: 'center'
+},
 })
